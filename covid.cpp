@@ -5,32 +5,23 @@ struct Dado
 {
     int obitos, casos;
     string data;
-    Dado(int obitos, int casos, string data):obitos(obitos), casos(casos), data(data)
-    {
-
-    }
+    Dado(int obitos, int casos, string data):obitos(obitos), casos(casos), data(data){}
 };
 
 class Local
 {
+private:
     string nome;
     int id;
     vector<Dado> calendar;
 public:
-    Local()
-    {
-        nome = "";
-        id = 0;
-    }
-    Local(string nome, int id):nome(nome), id(id)
-    {
+    Local(string nome = "", int id = 0):nome(nome), id(id){}
 
-    }
-    string getNome()
+    string getNome() const
     {
         return nome;
     }
-    int getID()
+    int getID() const
     {
         return id;
     }
@@ -101,16 +92,14 @@ public:
         calendar[dia].casos+=casos;
         calendar[dia].obitos+=mortes;
     }
-    int getCalendarSize()
+    int getCalendarSize() const
     {
-        return calendar.size();
+        return (int) calendar.size();
     }
 };
 
 Local pais("Brasil", 1);
-vector<Local> regioes;
-vector<Local> estados;
-vector<Local> cidades;
+vector<Local> regioes, estados, cidades;
 
 int queDiaFoiEsse(string data)
 {
@@ -197,8 +186,8 @@ void readFile()
             if (cont_pontvirg == 'O' - 'A')
                 break;
         }
-        if(cidade.empty())
-            continue;
+        if(cidade.empty()) continue;
+
         int id_UF = stoi(cod_UF);
         int id_cidade = stoi(cod_cidade);
         int numero_casos = stoi(casos);
@@ -210,8 +199,8 @@ void readFile()
 
 void informar(Local atual)
 {
-    int op=1;
-    while(op!=0)
+    int op = 1;
+    while(op != 0)
     {
         cout << "O local que esta avaliando eh: " << atual.getNome() << endl;
         cout << "Digite o ID do dado que deseja:" << endl;
@@ -271,23 +260,23 @@ void informar(Local atual)
     }
 }
 
-int enumerar(vector<Local> l_pesquisa)
+int enumerar(const vector<Local> &l_pesquisa)
 {
-    int n=1;
-    int i=0;
-    while(n!=0)
+    int n = 1;
+    int i = 0;
+    while(n != 0)
     {
         cout << "Digite o ID de onde deseja verificar os dados." << endl;
-        for(i=0; i<l_pesquisa.size(); i++)
+        for(i = 0; i < l_pesquisa.size(); i++)
         {
             cout << setw(4) << i+1 << " - " << l_pesquisa[i].getNome() << endl;
         }
         cout << "\n   0 - Retornar ao menu anterior." << endl;
         cin >> n;
         fflush(stdin);
-        if(n==0)
+        if(n == 0)
             return 0;
-        if(n>0 && n<i+1)
+        if(n > 0 && n < i+1)
             informar(l_pesquisa[n-1]);
         else
             cout << "Valor Invalido." << endl;
@@ -298,8 +287,8 @@ int enumerar(vector<Local> l_pesquisa)
 void menu()
 {
     cout << "As estatisticas foram carregadas." << endl;
-    int op=1;
-    while(op!=0)
+    int op = 1;
+    while(op != 0)
     {
         cout << "Digite o ID do item que deseja avaliar:" << endl;
         cout << setw(2) << 1 << " - Fazer busca no BRASIL." << endl;
