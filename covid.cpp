@@ -107,7 +107,7 @@ public:
     }
 };
 
-Local pais;
+Local pais("Brasil", 1);
 vector<Local> regioes;
 vector<Local> estados;
 vector<Local> cidades;
@@ -205,6 +205,138 @@ void readFile()
         int numero_mortes = stoi(mortes);
         salvarDados(regiao, estado, cidade, id_UF, id_cidade, data, numero_casos, numero_mortes);
     }
+    arq.close();
+}
+
+void informar(Local atual)
+{
+    int op=1;
+    while(op!=0)
+    {
+        cout << "O local que esta avaliando eh: " << atual.getNome() << endl;
+        cout << "Digite o ID do dado que deseja:" << endl;
+        cout << setw(2) << 1 << " - Total de CASOS  num periodo." << endl;
+        cout << setw(2) << 2 << " - Total de OBITOS num periodo." << endl;
+        cout << setw(2) << 3 << " - Media Movel de CASOS  num periodo." << endl;
+        cout << setw(2) << 4 << " - Media Movel de OBITOS num periodo." << endl;
+        cout << setw(2) << 5 << " - Tendencia de crescimento entre duas Medias Moveis de CASOS." << endl;
+        cout << setw(2) << 6 << " - Tendencia de crescimento entre duas Medias Moveis de OBITOS." << endl;
+        cout << setw(2) << 7 << " - Nossa Estatistica de CASOS." << endl;
+        cout << setw(2) << 8 << " - Nossa Estatistica de OBITOS." << endl;
+        cout << endl;
+        cout << setw(2) << 0 << " - Retornar ao menu anterior." << endl;
+        cin >> op;
+        fflush(stdin);
+        switch (op)
+        {
+           case 1:
+             //informar(pais);
+           break;
+
+           case 2:
+             //enumerar(regioes);
+           break;
+
+           case 3:
+             //enumerar(estados);
+           break;
+
+           case 4:
+             //enumerar(cidades);
+           break;
+
+           case 5:
+             //informar(pais);
+           break;
+
+           case 6:
+             //enumerar(regioes);
+           break;
+
+           case 7:
+             //enumerar(estados);
+           break;
+
+           case 8:
+             //enumerar(cidades);
+           break;
+
+           case 0:
+             //Retornar.
+           break;
+
+           default:
+             cout << "Valor Invalido." << endl;
+        }
+    }
+}
+
+int enumerar(vector<Local> l_pesquisa)
+{
+    int n=1;
+    int i=0;
+    while(n!=0)
+    {
+        cout << "Digite o ID de onde deseja verificar os dados." << endl;
+        for(i=0; i<l_pesquisa.size(); i++)
+        {
+            cout << setw(4) << i+1 << " - " << l_pesquisa[i].getNome() << endl;
+        }
+        cout << "\n   0 - Retornar ao menu anterior." << endl;
+        cin >> n;
+        fflush(stdin);
+        if(n==0)
+            return 0;
+        if(n>0 && n<i+1)
+            informar(l_pesquisa[n-1]);
+        else
+            cout << "Valor Invalido." << endl;
+    }
+    return 0;
+}
+
+void menu()
+{
+    cout << "As estatisticas foram carregadas." << endl;
+    int op=1;
+    while(op!=0)
+    {
+        cout << "Digite o ID do item que deseja avaliar:" << endl;
+        cout << setw(2) << 1 << " - Fazer busca no BRASIL." << endl;
+        cout << setw(2) << 2 << " - Fazer busca por REGIAO." << endl;
+        cout << setw(2) << 3 << " - Fazer busca por ESTADO." << endl;
+        cout << setw(2) << 4 << " - Fazer busca por CIDADE." << endl;
+        cout << endl;
+        cout << setw(2) << 0 << " - Encerrar programa." << endl;
+        cin >> op;
+        fflush(stdin);
+        switch (op)
+        {
+           case 1:
+             informar(pais);
+           break;
+
+           case 2:
+             enumerar(regioes);
+           break;
+
+           case 3:
+             enumerar(estados);
+           break;
+
+           case 4:
+             enumerar(cidades);
+           break;
+
+           case 0:
+             //Programa encerrado.
+           break;
+
+           default:
+             cout << "Valor Invalido." << endl;
+        }
+    }
+
 }
 
 int main()
@@ -214,5 +346,5 @@ int main()
     cout << estados[0].getCasos(queDiaFoiEsse("2021-01-02"), 2) << endl;
     cout << estados[0].growthObitos(queDiaFoiEsse("2021-01-10"), 3, 4) << endl;
     cout << estados[0].growthCasos(queDiaFoiEsse("2021-01-10"), 3, 4) << endl;
-
+    menu();
 }
