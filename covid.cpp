@@ -152,7 +152,7 @@ void salvarDados(Local &pais, vector<Local> &regioes, vector<Local> &estados, ve
 void readFile(Local &pais, vector<Local> &regioes, vector<Local> &estados, vector<Local> &cidades)
 {
     string linha;
-    ifstream arq("HIST_PAINEL_COVIDBR_Parte3_22jun2021.csv");
+    ifstream arq("HIST_PAINEL_COVIDBR_2021_Parte1_02jul2021.csv");
     int i = 0;
     while (getline(arq, linha))
     {
