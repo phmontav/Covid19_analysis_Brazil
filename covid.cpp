@@ -43,7 +43,7 @@ public:
         return id;
     }
 
-    int getNumeros(int dia, int intervalo, int tipo)
+    int getNumeros(int dia, int intervalo, int tipo) const
     {
         if(intervalo - 1 > dia || intervalo <= 0 || dia >= (int)calendar.size())
         {
@@ -58,12 +58,12 @@ public:
         return aux;
     }
 
-    double media(int dia, int intervalo, int tipo)
+    double media(int dia, int intervalo, int tipo) const
     {
         return (double)getNumeros(dia, intervalo, tipo)/intervalo;
     }
 
-    double growth(int dia, int intervalo_media, int intervalo_crescimento, int tipo)
+    double growth(int dia, int intervalo_media, int intervalo_crescimento, int tipo) const
     {
         if(intervalo_crescimento-1 >dia || intervalo_crescimento<=0)
         {
@@ -75,7 +75,7 @@ public:
         return 100*(num/den);
     }
 
-    double desvioPadrao(int dia, int intervalo, int tipo){
+    double desvioPadrao(int dia, int intervalo, int tipo) const{
         double resp = 0;
         double med = media(dia, intervalo, tipo);
         for(int i = dia-intervalo + 1; i <= dia; i++)
@@ -207,7 +207,7 @@ void readFile(Local &pais, vector<Local> &regioes, vector<Local> &estados, vecto
     arq.close();
 }
 
-void informar(Local atual)
+void informar(const Local &atual)
 {
     int op = 1, intervalo = 0, intervalo_growth = 0, valor = 0;
     double media = 0, desvio = 0;
