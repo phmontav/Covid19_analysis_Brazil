@@ -1,7 +1,7 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-enum {obitos, casos};
+enum {obitos = 0, casos};
 
 void clean_stdin()
 {
@@ -14,9 +14,9 @@ void clean_stdin()
 
 struct Dado
 {
-    int obitos, casos;
+    int numeros[2];
     string data;
-    Dado(int obitos, int casos, string data):obitos(obitos), casos(casos), data(data){}
+    Dado(int novos_obitos, int novos_casos, string data): numeros {novos_obitos, novos_casos}, data(data){}
 };
 
 class Local
@@ -32,15 +32,18 @@ public:
     {
         return (int) calendar.size();
     }
+
     string getNome() const
     {
         return nome;
     }
+
     int getID() const
     {
         return id;
     }
-    int getObitos(int dia, int intervalo)
+
+    int getNumeros(int dia, int intervalo, int tipo)
     {
         if(intervalo - 1 > dia || intervalo <= 0 || dia >= (int)calendar.size())
         {
@@ -50,80 +53,47 @@ public:
         int aux = 0;
         for(int i = dia-intervalo + 1; i <= dia; i++)
         {
-            aux += calendar[i].obitos;
+            aux += calendar[i].numeros[tipo];
         }
         return aux;
     }
-    int getCasos(int dia, int intervalo)
-    {
-        if(intervalo-1 >dia || intervalo <= 0 || dia >= (int)calendar.size())
-        {
-            throw(1);
-        }
 
-        int aux = 0;
-        for(int i = dia-intervalo+1; i<=dia; i++)
-        {
-            aux += calendar[i].casos;
-        }
-        return aux;
-    }
-    double mediaObitos(int dia, int intervalo)
+    double media(int dia, int intervalo, int tipo)
     {
-        return (double)getObitos(dia, intervalo)/intervalo;
+        return (double)getNumeros(dia, intervalo, tipo)/intervalo;
     }
-    double mediaCasos(int dia, int intervalo)
-    {
-        return (double)getCasos(dia, intervalo)/intervalo;
-    }
-    double growthObitos(int dia, int intervalo_media, int intervalo_crescimento)
+
+    double growth(int dia, int intervalo_media, int intervalo_crescimento, int tipo)
     {
         if(intervalo_crescimento-1 >dia || intervalo_crescimento<=0)
         {
             throw(2);
         }
-        double num = mediaObitos(dia, intervalo_media)-mediaObitos(dia-intervalo_crescimento, intervalo_media);
-        double den = mediaObitos(dia-intervalo_crescimento, intervalo_media);
+        double num = media(dia, intervalo_media, tipo)-media(dia-intervalo_crescimento, intervalo_media, tipo);
+        double den = media(dia-intervalo_crescimento, intervalo_media, tipo);
         if(den == 0) return 1e18;
         return 100*(num/den);
     }
-    double growthCasos(int dia, int intervalo_media, int intervalo_crescimento)
-    {
-        if(intervalo_crescimento-1 >dia || intervalo_crescimento<=0)
-        {
-            throw(2);
-        }
-        double num = mediaCasos(dia, intervalo_media)-mediaCasos(dia-intervalo_crescimento, intervalo_media);
-        double den = mediaCasos(dia-intervalo_crescimento, intervalo_media);
-        if(den == 0) return 1e18;
-        return 100*(num/den);
-    }
-    double desvioPadraoCasos(int dia, int intervalo){
+
+    double desvioPadrao(int dia, int intervalo, int tipo){
         double resp = 0;
-        double media = mediaCasos(dia, intervalo);
+        double med = media(dia, intervalo, tipo);
         for(int i = dia-intervalo + 1; i <= dia; i++)
         {
-            resp += (double)(calendar[i].casos - media)*(calendar[i].casos - media);
+            resp += (double)(calendar[i].numeros[tipo] - med)*(calendar[i].numeros[tipo] - med);
         }
         return sqrt(resp/intervalo);
     }
-    double desvioPadraoObitos(int dia, int intervalo){
-        double resp = 0;
-        double media = mediaObitos(dia, intervalo);
-        for(int i = dia-intervalo + 1; i <= dia; i++)
-        {
-            resp += (calendar[i].obitos - media)*(calendar[i].obitos - media);
-        }
-        return sqrt(resp/intervalo);
-    }
+
     void inserirDado(Dado d)
     {
         calendar.push_back(d);
     }
-    void atualizar(int mortes, int casos, int dia)
+
+    void atualizar(int novos_obitos, int novos_casos, int dia)
     {
-        calendar[dia].casos+=casos;
-        calendar[dia].obitos+=mortes;
+        calendar[dia].numeros[casos] += novos_casos;
+        calendar[dia].numeros[obitos] += novos_obitos;
     }
 };
 
@@ -154,7 +124,7 @@ int queDiaFoiEsse(string data)
     return aux-1;
 }
 
-void salvarDados(Local &pais, vector<Local> &regioes, vector<Local> &estados, vector<Local> &cidades, string reg, string est, string cid, int id_UF, int id_cidade, string data, int casos, int mortes)
+void salvarDados(Local &pais, vector<Local> &regioes, vector<Local> &estados, vector<Local> &cidades, string reg, string est, string cid, int id_UF, int id_cidade, string data, int novos_casos, int novos_obitos)
 {
     //Se o vector do local for vazio ou o ultimo local for diferente do atual, queremos adicionar um local novo.
     if(cidades.empty() || cidades.back().getID() != id_cidade)
@@ -164,19 +134,19 @@ void salvarDados(Local &pais, vector<Local> &regioes, vector<Local> &estados, ve
     if(regioes.empty() || regioes.back().getNome() != reg)
         regioes.push_back(Local (reg, 0));
     //Adiciona os dados, verificando se a data ja existe para as regioes, estados e pais.
-    cidades.back().inserirDado(Dado (mortes, casos, data));
+    cidades.back().inserirDado(Dado (novos_obitos, novos_casos, data));
     if(estados.back().getCalendarSize()>=cidades.back().getCalendarSize())
-        estados.back().atualizar(mortes, casos, cidades.back().getCalendarSize()-1);
+        estados.back().atualizar(novos_obitos, novos_casos, cidades.back().getCalendarSize()-1);
     else
-        estados.back().inserirDado(Dado (mortes, casos, data));
+        estados.back().inserirDado(Dado (novos_obitos, novos_casos, data));
     if(regioes.back().getCalendarSize()>=cidades.back().getCalendarSize())
-        regioes.back().atualizar(mortes, casos, cidades.back().getCalendarSize()-1);
+        regioes.back().atualizar(novos_obitos, novos_casos, cidades.back().getCalendarSize()-1);
     else
-        regioes.back().inserirDado(Dado (mortes, casos, data));
+        regioes.back().inserirDado(Dado (novos_obitos, novos_casos, data));
     if(pais.getCalendarSize()>=cidades.back().getCalendarSize())
-        pais.atualizar(mortes, casos, cidades.back().getCalendarSize()-1);
+        pais.atualizar(novos_obitos, novos_casos, cidades.back().getCalendarSize()-1);
     else
-        pais.inserirDado(Dado (mortes, casos, data));
+        pais.inserirDado(Dado (novos_obitos, novos_casos, data));
 }
 
 void readFile(Local &pais, vector<Local> &regioes, vector<Local> &estados, vector<Local> &cidades)
@@ -195,8 +165,8 @@ void readFile(Local &pais, vector<Local> &regioes, vector<Local> &estados, vecto
         string estado;
         string cidade;
         string data;
-        string casos;
-        string mortes;
+        string novos_casos;
+        string novos_obitos;
         string cod_UF;
         string cod_cidade;
         int cont_pontvirg = 0;
@@ -220,9 +190,9 @@ void readFile(Local &pais, vector<Local> &regioes, vector<Local> &estados, vecto
             if (cont_pontvirg == 'H' - 'A')
                 data.push_back(c);
             if (cont_pontvirg == 'L' - 'A')
-                casos.push_back(c);
+                novos_casos.push_back(c);
             if (cont_pontvirg == 'N' - 'A')
-                mortes.push_back(c);
+                novos_obitos.push_back(c);
             if (cont_pontvirg == 'O' - 'A')
                 break;
         }
@@ -230,9 +200,9 @@ void readFile(Local &pais, vector<Local> &regioes, vector<Local> &estados, vecto
 
         int id_UF = stoi(cod_UF);
         int id_cidade = stoi(cod_cidade);
-        int numero_casos = stoi(casos);
-        int numero_mortes = stoi(mortes);
-        salvarDados(pais, regioes, estados, cidades, regiao, estado, cidade, id_UF, id_cidade, data, numero_casos, numero_mortes);
+        int numero_casos = stoi(novos_casos);
+        int numero_obitos = stoi(novos_obitos);
+        salvarDados(pais, regioes, estados, cidades, regiao, estado, cidade, id_UF, id_cidade, data, numero_casos, numero_obitos);
     }
     arq.close();
 }
@@ -268,7 +238,7 @@ void informar(Local atual)
                 cout << "Digite o dia final do periodo (DD/MM): ";
                 cin >> fim;
                 clean_stdin();
-                valor = atual.getCasos(queDiaFoiEsse(fim), queDiaFoiEsse(fim) - queDiaFoiEsse(ini) + 1);
+                valor = atual.getNumeros(queDiaFoiEsse(fim), queDiaFoiEsse(fim) - queDiaFoiEsse(ini) + 1, casos);
                 cout << "\nTotal de casos novos no intervalo de " << ini << " a " << fim << ": "
                     << valor << endl;
                 cout << "\nDigite 0 para continuar: ";
@@ -283,7 +253,7 @@ void informar(Local atual)
                 cout << "Digite o dia final do periodo (DD/MM): ";
                 cin >> fim;
                 clean_stdin();
-                valor = atual.getObitos(queDiaFoiEsse(fim), queDiaFoiEsse(fim) - queDiaFoiEsse(ini) + 1);
+                valor = atual.getNumeros(queDiaFoiEsse(fim), queDiaFoiEsse(fim) - queDiaFoiEsse(ini) + 1, obitos);
                 cout << "\nTotal de obitos no intervalo de " << ini << " a " << fim << ": "
                     << valor << endl;
                 cout << "\nDigite 0 para continuar: ";
@@ -298,7 +268,7 @@ void informar(Local atual)
                 cout << "Digite o intervalo de tempo em dias: ";
                 cin >> intervalo;
                 clean_stdin();
-                media = atual.mediaCasos(queDiaFoiEsse(fim), intervalo);
+                media = atual.media(queDiaFoiEsse(fim), intervalo, casos);
                 cout << "\nMedia movel de casos novos no dia " << fim << " com intervalo de " << intervalo << " dias: "
                     << media << endl;
                 cout << "\nDigite 0 para continuar: ";
@@ -313,7 +283,7 @@ void informar(Local atual)
                 cout << "Digite o intervalo de tempo em dias: ";
                 cin >> intervalo;
                 clean_stdin();
-                media = atual.mediaObitos(queDiaFoiEsse(fim), intervalo);
+                media = atual.media(queDiaFoiEsse(fim), intervalo, obitos);
                 cout << "\nMedia movel de obitos no dia " << fim << " com intervalo de " << intervalo << " dias: "
                     << media << endl;
                 cout << "\nDigite 0 para continuar: ";
@@ -331,10 +301,10 @@ void informar(Local atual)
                 cout << "Digite com quantos dias anteriores deseja comparar: ";
                 cin >> intervalo_growth;
                 clean_stdin();
-                media = atual.growthCasos(queDiaFoiEsse(fim), intervalo, intervalo_growth);
+                media = atual.growth(queDiaFoiEsse(fim), intervalo, intervalo_growth, casos);
                 cout << "\nTendencia de crescimento de casos novos no dia " << fim
-                    << " com intervalo de media movel igual a " << intervalo
-                    << " dias em relação a " << intervalo_growth << " dias anteriores: ";
+                    << "\ncom intervalo de media movel igual a " << intervalo
+                    << " dias\nem relação a " << intervalo_growth << " dias anteriores: ";
                 if(media == 1e18) cout << "INF" << endl;
                 else cout << setprecision(2) << fixed << media << "%" << endl;
                 cout << "\nDigite 0 para continuar: ";
@@ -352,10 +322,10 @@ void informar(Local atual)
                 cout << "Digite com quantos dias anteriores deseja comparar: ";
                 cin >> intervalo_growth;
                 clean_stdin();
-                media = atual.growthObitos(queDiaFoiEsse(fim), intervalo, intervalo_growth);
+                media = atual.growth(queDiaFoiEsse(fim), intervalo, intervalo_growth, obitos);
                 cout << "\nTendencia de crescimento de obitos no dia " << fim
-                    << " com intervalo de media movel igual a " << intervalo
-                    << " dias em relação a " << intervalo_growth << " dias anteriores: ";
+                    << "\ncom intervalo de media movel igual a " << intervalo
+                    << " dias\nem relação a " << intervalo_growth << " dias anteriores: ";
                 if(media == 1e18) cout << "INF" << endl;
                 else cout << setprecision(2) << fixed << media << "%" << endl;
                 cout << "\nDigite 0 para continuar: ";
@@ -370,8 +340,8 @@ void informar(Local atual)
                 cout << "Digite o dia final do periodo (DD/MM): ";
                 cin >> fim;
                 clean_stdin();
-                media = atual.mediaCasos(queDiaFoiEsse(fim), queDiaFoiEsse(fim) - queDiaFoiEsse(ini) + 1);
-                desvio = atual.desvioPadraoCasos(queDiaFoiEsse(fim), queDiaFoiEsse(fim) - queDiaFoiEsse(ini) + 1);
+                media = atual.media(queDiaFoiEsse(fim), queDiaFoiEsse(fim) - queDiaFoiEsse(ini) + 1, casos);
+                desvio = atual.desvioPadrao(queDiaFoiEsse(fim), queDiaFoiEsse(fim) - queDiaFoiEsse(ini) + 1, casos);
                 cout << "\nMedia de casos novos no intervalo de " << ini << " a " << fim << ": "
                     << media << endl;
                 cout << "Desvio padrao: " << desvio << endl;
@@ -387,8 +357,8 @@ void informar(Local atual)
                 cout << "Digite o dia final do periodo (DD/MM): ";
                 cin >> fim;
                 clean_stdin();
-                media = atual.mediaObitos(queDiaFoiEsse(fim), queDiaFoiEsse(fim) - queDiaFoiEsse(ini) + 1);
-                desvio = atual.desvioPadraoObitos(queDiaFoiEsse(fim), queDiaFoiEsse(fim) - queDiaFoiEsse(ini) + 1);
+                media = atual.media(queDiaFoiEsse(fim), queDiaFoiEsse(fim) - queDiaFoiEsse(ini) + 1, obitos);
+                desvio = atual.desvioPadrao(queDiaFoiEsse(fim), queDiaFoiEsse(fim) - queDiaFoiEsse(ini) + 1, obitos);
                 cout << "\nMedia de obitos no intervalo de " << ini << " a " << fim << ": "
                     << media << endl;
                 cout << "Desvio padrao: " << desvio << endl;
