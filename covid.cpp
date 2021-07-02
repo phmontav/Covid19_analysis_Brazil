@@ -217,13 +217,13 @@ void informar(const Local &atual)
         {
             cout << "O local que esta avaliando eh: " << atual.getNome() << endl;
             cout << "Digite o ID do dado que deseja:" << endl;
-            cout << setw(2) << 1 << " - Total de CASOS  num periodo." << endl;
+            cout << setw(2) << 1 << " - Total de CASOS NOVOS num periodo." << endl;
             cout << setw(2) << 2 << " - Total de OBITOS num periodo." << endl;
-            cout << setw(2) << 3 << " - Media Movel de CASOS  num periodo." << endl;
+            cout << setw(2) << 3 << " - Media Movel de CASOS NOVOS num periodo." << endl;
             cout << setw(2) << 4 << " - Media Movel de OBITOS num periodo." << endl;
-            cout << setw(2) << 5 << " - Tendencia de crescimento entre duas Medias Moveis de CASOS." << endl;
+            cout << setw(2) << 5 << " - Tendencia de crescimento entre duas Medias Moveis de CASOS NOVOS." << endl;
             cout << setw(2) << 6 << " - Tendencia de crescimento entre duas Medias Moveis de OBITOS." << endl;
-            cout << setw(2) << 7 << " - Media e desvio padrao de CASOS num periodo." << endl;
+            cout << setw(2) << 7 << " - Media e desvio padrao de CASOS NOVOS num periodo." << endl;
             cout << setw(2) << 8 << " - Media e desvio padrao de OBITO num periodo." << endl;
             cout << endl;
             cout << setw(2) << 0 << " - Retornar ao menu anterior." << endl;
@@ -304,7 +304,7 @@ void informar(const Local &atual)
                 media = atual.growth(queDiaFoiEsse(fim), intervalo, intervalo_growth, casos);
                 cout << "\nTendencia de crescimento de casos novos no dia " << fim
                     << "\ncom intervalo de media movel igual a " << intervalo
-                    << " dias\nem relação a " << intervalo_growth << " dias anteriores: ";
+                    << " dias\nem relacao a " << intervalo_growth << " dias anteriores: ";
                 if(media == 1e18) cout << "INF" << endl;
                 else cout << setprecision(2) << fixed << media << "%" << endl;
                 cout << "\nDigite 0 para continuar: ";
@@ -325,7 +325,7 @@ void informar(const Local &atual)
                 media = atual.growth(queDiaFoiEsse(fim), intervalo, intervalo_growth, obitos);
                 cout << "\nTendencia de crescimento de obitos no dia " << fim
                     << "\ncom intervalo de media movel igual a " << intervalo
-                    << " dias\nem relação a " << intervalo_growth << " dias anteriores: ";
+                    << " dias\nem relacao a " << intervalo_growth << " dias anteriores: ";
                 if(media == 1e18) cout << "INF" << endl;
                 else cout << setprecision(2) << fixed << media << "%" << endl;
                 cout << "\nDigite 0 para continuar: ";
