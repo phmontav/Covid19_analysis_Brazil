@@ -437,7 +437,7 @@ int enumerar(const vector<Local> &l_pesquisa)
     bool found = false;
     while(c != "0")
     {
-        cout << "Digite o nome do local que voce deseja verificar, ou digite 1 para fazer a pesquisa por ID." << endl;
+        cout << "Digite o nome do local que voce deseja verificar, ou digite 1 para fazer a pesquisa por NUMERO." << endl;
         cout << "Para retornar ao menu, digite 0." << endl;
         getline(cin, c);
         fflush(stdin);
@@ -450,7 +450,7 @@ int enumerar(const vector<Local> &l_pesquisa)
                 cout << setw(4) << i+1 << " - " << l_pesquisa[i].getNome() << endl;
             }
             cout << "\n   0 - Retornar a pesquisa por nome." << endl;
-            cout << "Digite o ID de onde deseja verificar os dados." << endl;
+            cout << "Digite o NUMERO de onde deseja verificar os dados." << endl;
             cin >> n;
             fflush(stdin);
             if(n > 0 && n < i+1)
