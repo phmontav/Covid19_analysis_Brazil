@@ -3,6 +3,15 @@ using namespace std;
 
 enum {obitos, casos};
 
+void clean_stdin()
+{
+    int c;
+    do
+    {
+        c = getchar();
+    } while (c != '\n' and c != EOF);
+}
+
 struct Dado
 {
     int obitos, casos;
@@ -256,79 +265,79 @@ void informar(Local atual)
             cout << endl;
             cout << setw(2) << 0 << " - Retornar ao menu anterior." << endl;
             cin >> op;
-            fflush(stdin);
+            clean_stdin();
             switch (op)
             {
             case 1:
                 cout << "Digite o dia inicial do periodo (DD/MM): ";
                 cin >> ini;
-                fflush(stdin);
+                clean_stdin();
                 cout << "Digite o dia final do periodo (DD/MM): ";
                 cin >> fim;
-                fflush(stdin);
+                clean_stdin();
                 valor = atual.getCasos(queDiaFoiEsse(fim), queDiaFoiEsse(fim) - queDiaFoiEsse(ini) + 1);
                 cout << "\nTotal de casos novos no intervalo de " << ini << " a " << fim << ": "
                     << valor << endl;
                 cout << "\nDigite 0 para continuar: ";
                 cin >> ini;
-                fflush(stdin);
+                clean_stdin();
             break;
 
             case 2:
                 cout << "Digite o dia inicial do periodo (DD/MM): ";
                 cin >> ini;
-                fflush(stdin);
+                clean_stdin();
                 cout << "Digite o dia final do periodo (DD/MM): ";
                 cin >> fim;
-                fflush(stdin);
+                clean_stdin();
                 valor = atual.getObitos(queDiaFoiEsse(fim), queDiaFoiEsse(fim) - queDiaFoiEsse(ini) + 1);
                 cout << "\nTotal de obitos no intervalo de " << ini << " a " << fim << ": "
                     << valor << endl;
                 cout << "\nDigite 0 para continuar: ";
                 cin >> ini;
-                fflush(stdin);
+                clean_stdin();
             break;
 
             case 3:
                 cout << "Digite o dia (DD/MM): ";
                 cin >> fim;
-                fflush(stdin);
+                clean_stdin();
                 cout << "Digite o intervalo de tempo em dias: ";
                 cin >> intervalo;
-                fflush(stdin);
+                clean_stdin();
                 media = atual.mediaCasos(queDiaFoiEsse(fim), intervalo);
                 cout << "\nMedia movel de casos novos no dia " << fim << " com intervalo de " << intervalo << " dias: "
                     << media << endl;
                 cout << "\nDigite 0 para continuar: ";
                 cin >> ini;
-                fflush(stdin);
+                clean_stdin();
             break;
 
             case 4:
                 cout << "Digite o dia (DD/MM): ";
                 cin >> fim;
-                fflush(stdin);
+                clean_stdin();
                 cout << "Digite o intervalo de tempo em dias: ";
                 cin >> intervalo;
-                fflush(stdin);
+                clean_stdin();
                 media = atual.mediaObitos(queDiaFoiEsse(fim), intervalo);
                 cout << "\nMedia movel de obitos no dia " << fim << " com intervalo de " << intervalo << " dias: "
                     << media << endl;
                 cout << "\nDigite 0 para continuar: ";
                 cin >> ini;
-                fflush(stdin);
+                clean_stdin();
             break;
 
             case 5:
                 cout << "Digite o dia (DD/MM): ";
                 cin >> fim;
-                fflush(stdin);
+                clean_stdin();
                 cout << "Digite o intervalo da media movel em dias: ";
                 cin >> intervalo;
-                fflush(stdin);
+                clean_stdin();
                 cout << "Digite com quantos dias anteriores deseja comparar: ";
                 cin >> intervalo_growth;
-                fflush(stdin);
+                clean_stdin();
                 media = atual.growthCasos(queDiaFoiEsse(fim), intervalo, intervalo_growth);
                 cout << "\nTendencia de crescimento de casos novos no dia " << fim
                     << " com intervalo de media movel igual a " << intervalo
@@ -336,19 +345,19 @@ void informar(Local atual)
                     << setprecision(2) << fixed << media << "%" << endl;
                 cout << "\nDigite 0 para continuar: ";
                 cin >> ini;
-                fflush(stdin);
+                clean_stdin();
             break;
 
             case 6:
                 cout << "Digite o dia (DD/MM): ";
                 cin >> fim;
-                fflush(stdin);
+                clean_stdin();
                 cout << "Digite o intervalo da media movel em dias: ";
                 cin >> intervalo;
-                fflush(stdin);
+                clean_stdin();
                 cout << "Digite com quantos dias anteriores deseja comparar: ";
                 cin >> intervalo_growth;
-                fflush(stdin);
+                clean_stdin();
                 media = atual.growthObitos(queDiaFoiEsse(fim), intervalo, intervalo_growth);
                 cout << "\nTendencia de crescimento de obitos no dia " << fim
                     << " com intervalo de media movel igual a " << intervalo
@@ -356,16 +365,16 @@ void informar(Local atual)
                     << setprecision(2) << fixed << media << "%" << endl;
                 cout << "\nDigite 0 para continuar: ";
                 cin >> ini;
-                fflush(stdin);
+                clean_stdin();
             break;
 
             case 7:
                 cout << "Digite o dia inicial do periodo (DD/MM): ";
                 cin >> ini;
-                fflush(stdin);
+                clean_stdin();
                 cout << "Digite o dia final do periodo (DD/MM): ";
                 cin >> fim;
-                fflush(stdin);
+                clean_stdin();
                 media = atual.mediaCasos(queDiaFoiEsse(fim), queDiaFoiEsse(fim) - queDiaFoiEsse(ini) + 1);
                 desvio = atual.desvioPadraoCasos(queDiaFoiEsse(fim), queDiaFoiEsse(fim) - queDiaFoiEsse(ini) + 1);
                 cout << "\nMedia de casos novos no intervalo de " << ini << " a " << fim << ": "
@@ -373,16 +382,16 @@ void informar(Local atual)
                 cout << "Desvio padrao: " << desvio << endl;
                 cout << "\nDigite 0 para continuar: ";
                 cin >> ini;
-                fflush(stdin);
+                clean_stdin();
             break;
 
             case 8:
                 cout << "Digite o dia inicial do periodo (DD/MM): ";
                 cin >> ini;
-                fflush(stdin);
+                clean_stdin();
                 cout << "Digite o dia final do periodo (DD/MM): ";
                 cin >> fim;
-                fflush(stdin);
+                clean_stdin();
                 media = atual.mediaObitos(queDiaFoiEsse(fim), queDiaFoiEsse(fim) - queDiaFoiEsse(ini) + 1);
                 desvio = atual.desvioPadraoObitos(queDiaFoiEsse(fim), queDiaFoiEsse(fim) - queDiaFoiEsse(ini) + 1);
                 cout << "\nMedia de obitos no intervalo de " << ini << " a " << fim << ": "
@@ -390,7 +399,7 @@ void informar(Local atual)
                 cout << "Desvio padrao: " << desvio << endl;
                 cout << "\nDigite 0 para continuar: ";
                 cin >> ini;
-                fflush(stdin);
+                clean_stdin();
             break;
 
             case 0:
@@ -408,19 +417,19 @@ void informar(Local atual)
                 cout << "Intervalo invalido" << endl;
                 cout << "\nDigite 0 para continuar: ";
                 cin >> ini;
-                fflush(stdin);
+                clean_stdin();
                 break;
             case 2:
                 cout << "Intervalo de crescimento invalido" << endl;
                 cout << "\nDigite 0 para continuar: ";
                 cin >> ini;
-                fflush(stdin);
+                clean_stdin();
                 break;
             case 3:
                 cout << "Data Invalida" << endl;
                 cout << "\nDigite 0 para continuar: ";
                 cin >> ini;
-                fflush(stdin);
+                clean_stdin();
                 break;
             default:
                 cout << "Erro." << endl;
@@ -440,7 +449,7 @@ int enumerar(const vector<Local> &l_pesquisa)
         cout << "Digite o nome do local que voce deseja verificar, ou digite 1 para fazer a pesquisa por NUMERO." << endl;
         cout << "Para retornar ao menu, digite 0." << endl;
         getline(cin, c);
-        fflush(stdin);
+        clean_stdin();
         if(c=="0")
             return 0;
         if(c=="1")
@@ -452,7 +461,7 @@ int enumerar(const vector<Local> &l_pesquisa)
             cout << "\n   0 - Retornar a pesquisa por nome." << endl;
             cout << "Digite o NUMERO de onde deseja verificar os dados." << endl;
             cin >> n;
-            fflush(stdin);
+            clean_stdin();
             if(n > 0 && n < i+1)
                 informar(l_pesquisa[n-1]);
             else
@@ -494,7 +503,7 @@ void menu()
         cout << endl;
         cout << setw(2) << 0 << " - Encerrar programa." << endl;
         cin >> op;
-        fflush(stdin);
+        clean_stdin();
         switch (op)
         {
            case 1:
@@ -523,6 +532,8 @@ void menu()
     }
 
 }
+
+
 
 int main()
 {
