@@ -273,7 +273,7 @@ void informar(Local atual)
                 cin >> ini;
                 fflush(stdin);
             break;
-        
+
             case 2:
                 cout << "Digite o dia inicial do periodo (DD/MM): ";
                 cin >> ini;
@@ -319,7 +319,7 @@ void informar(Local atual)
                 fflush(stdin);
             break;
 
-            case 5: 
+            case 5:
                 cout << "Digite o dia (DD/MM): ";
                 cin >> fim;
                 fflush(stdin);
@@ -426,29 +426,56 @@ void informar(Local atual)
                 cout << "Erro." << endl;
         }
     }
-    
+
 }
 
 int enumerar(const vector<Local> &l_pesquisa)
 {
+    string c = "1";
     int n = 1;
     int i = 0;
-    while(n != 0)
+    bool found = false;
+    while(c != "0")
     {
-        cout << "Digite o ID de onde deseja verificar os dados." << endl;
-        for(i = 0; i < l_pesquisa.size(); i++)
-        {
-            cout << setw(4) << i+1 << " - " << l_pesquisa[i].getNome() << endl;
-        }
-        cout << "\n   0 - Retornar ao menu anterior." << endl;
-        cin >> n;
+        cout << "Digite o nome do local que voce deseja verificar, ou digite 1 para fazer a pesquisa por NUMERO." << endl;
+        cout << "Para retornar ao menu, digite 0." << endl;
+        getline(cin, c);
         fflush(stdin);
-        if(n == 0)
+        if(c=="0")
             return 0;
-        if(n > 0 && n < i+1)
-            informar(l_pesquisa[n-1]);
+        if(c=="1")
+        {
+            for(i = 0; i < l_pesquisa.size(); i++)
+            {
+                cout << setw(4) << i+1 << " - " << l_pesquisa[i].getNome() << endl;
+            }
+            cout << "\n   0 - Retornar a pesquisa por nome." << endl;
+            cout << "Digite o NUMERO de onde deseja verificar os dados." << endl;
+            cin >> n;
+            fflush(stdin);
+            if(n > 0 && n < i+1)
+                informar(l_pesquisa[n-1]);
+            else
+            {
+                if(n != 0)
+                    cout << "Valor Invalido." << endl;
+            }
+        }
         else
-            cout << "Valor Invalido." << endl;
+        {
+            for(i = 0; i < l_pesquisa.size(); i++)
+            {
+                if(l_pesquisa[i].getNome() == c)
+                {
+                    informar(l_pesquisa[i]);
+                    found = true;
+                }
+            }
+            if(found)
+                found = false;
+            else
+                cout << "Nome nao encontrado. Talvez nao seja possivel verificar nomes com acento ou com letras maiusculas diferentes das salvas." << endl;
+        }
     }
     return 0;
 }
