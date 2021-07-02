@@ -82,7 +82,10 @@ public:
         {
             throw(2);
         }
-        return 100*((mediaObitos(dia, intervalo_media)-mediaObitos(dia-intervalo_crescimento, intervalo_media))/mediaObitos(dia-intervalo_crescimento, intervalo_media));
+        double num = mediaObitos(dia, intervalo_media)-mediaObitos(dia-intervalo_crescimento, intervalo_media);
+        double den = mediaObitos(dia-intervalo_crescimento, intervalo_media);
+        if(den == 0) return 1e18;
+        return 100*(num/den);
     }
     double growthCasos(int dia, int intervalo_media, int intervalo_crescimento)
     {
@@ -90,7 +93,10 @@ public:
         {
             throw(2);
         }
-        return 100*((mediaCasos(dia, intervalo_media)-mediaCasos(dia-intervalo_crescimento, intervalo_media))/mediaCasos(dia-intervalo_crescimento, intervalo_media));
+        double num = mediaCasos(dia, intervalo_media)-mediaCasos(dia-intervalo_crescimento, intervalo_media);
+        double den = mediaCasos(dia-intervalo_crescimento, intervalo_media);
+        if(den == 0) return 1e18;
+        return 100*(num/den);
     }
     double desvioPadraoCasos(int dia, int intervalo){
         double resp = 0;
@@ -328,8 +334,9 @@ void informar(Local atual)
                 media = atual.growthCasos(queDiaFoiEsse(fim), intervalo, intervalo_growth);
                 cout << "\nTendencia de crescimento de casos novos no dia " << fim
                     << " com intervalo de media movel igual a " << intervalo
-                    << " dias em relação a " << intervalo_growth << " dias anteriores: "
-                    << setprecision(2) << fixed << media << "%" << endl;
+                    << " dias em relação a " << intervalo_growth << " dias anteriores: ";
+                if(media == 1e18) cout << "INF" << endl;
+                else cout << setprecision(2) << fixed << media << "%" << endl;
                 cout << "\nDigite 0 para continuar: ";
                 cin >> ini;
                 clean_stdin();
@@ -348,8 +355,9 @@ void informar(Local atual)
                 media = atual.growthObitos(queDiaFoiEsse(fim), intervalo, intervalo_growth);
                 cout << "\nTendencia de crescimento de obitos no dia " << fim
                     << " com intervalo de media movel igual a " << intervalo
-                    << " dias em relação a " << intervalo_growth << " dias anteriores: "
-                    << setprecision(2) << fixed << media << "%" << endl;
+                    << " dias em relação a " << intervalo_growth << " dias anteriores: ";
+                if(media == 1e18) cout << "INF" << endl;
+                else cout << setprecision(2) << fixed << media << "%" << endl;
                 cout << "\nDigite 0 para continuar: ";
                 cin >> ini;
                 clean_stdin();
