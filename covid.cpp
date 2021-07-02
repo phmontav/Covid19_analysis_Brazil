@@ -19,16 +19,6 @@ struct Dado
     Dado(int obitos, int casos, string data):obitos(obitos), casos(casos), data(data){}
 };
 
-// struct Obitos
-// {
-//     int valor;
-// };
-
-// struct Casos
-// {
-//     int valor;
-// };
-
 class Local
 {
 private:
@@ -131,9 +121,6 @@ public:
     }
 };
 
-Local pais("Brasil", 1);
-vector<Local> regioes, estados, cidades;
-
 int queDiaFoiEsse(string data)
 {
     //DD/MM para AAAA-MM-DD se nao for AAAA-MM-DD
@@ -161,7 +148,7 @@ int queDiaFoiEsse(string data)
     return aux-1;
 }
 
-void salvarDados(string reg, string est, string cid, int id_UF, int id_cidade, string data, int casos, int mortes)
+void salvarDados(Local &pais, vector<Local> &regioes, vector<Local> &estados, vector<Local> &cidades, string reg, string est, string cid, int id_UF, int id_cidade, string data, int casos, int mortes)
 {
     //Se o vector do local for vazio ou o ultimo local for diferente do atual, queremos adicionar um local novo.
     if(cidades.empty() || cidades.back().getID() != id_cidade)
@@ -186,7 +173,7 @@ void salvarDados(string reg, string est, string cid, int id_UF, int id_cidade, s
         pais.inserirDado(Dado (mortes, casos, data));
 }
 
-void readFile()
+void readFile(Local &pais, vector<Local> &regioes, vector<Local> &estados, vector<Local> &cidades)
 {
     string linha;
     ifstream arq("HIST_PAINEL_COVIDBR_Parte3_22jun2021.csv");
@@ -239,7 +226,7 @@ void readFile()
         int id_cidade = stoi(cod_cidade);
         int numero_casos = stoi(casos);
         int numero_mortes = stoi(mortes);
-        salvarDados(regiao, estado, cidade, id_UF, id_cidade, data, numero_casos, numero_mortes);
+        salvarDados(pais, regioes, estados, cidades, regiao, estado, cidade, id_UF, id_cidade, data, numero_casos, numero_mortes);
     }
     arq.close();
 }
@@ -449,7 +436,6 @@ int enumerar(const vector<Local> &l_pesquisa)
         cout << "Digite o nome do local que voce deseja verificar, ou digite 1 para fazer a pesquisa por NUMERO." << endl;
         cout << "Para retornar ao menu, digite 0." << endl;
         getline(cin, c);
-        clean_stdin();
         if(c=="0")
             return 0;
         if(c=="1")
@@ -489,7 +475,7 @@ int enumerar(const vector<Local> &l_pesquisa)
     return 0;
 }
 
-void menu()
+void menu(Local &pais, vector<Local> &regioes, vector<Local> &estados, vector<Local> &cidades)
 {
     cout << "As estatisticas foram carregadas." << endl;
     int op = 1;
@@ -533,14 +519,10 @@ void menu()
 
 }
 
-
-
 int main()
 {
-    readFile();
-    // cout << estados[0].getObitos(queDiaFoiEsse("2021-01-01"), 1) << endl;
-    // cout << estados[0].getCasos(queDiaFoiEsse("2021-01-02"), 2) << endl;
-    // cout << estados[0].growthObitos(queDiaFoiEsse("2021-01-10"), 3, 4) << endl;
-    // cout << estados[0].growthCasos(queDiaFoiEsse("2021-01-10"), 3, 4) << endl;
-    menu();
+    Local pais("Brasil", 1);
+    vector<Local> regioes, estados, cidades;
+    readFile(pais, regioes, estados, cidades);
+    menu(pais, regioes, estados, cidades);
 }
