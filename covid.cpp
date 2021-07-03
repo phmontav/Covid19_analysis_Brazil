@@ -133,7 +133,7 @@ void salvarDados(Local &pais, vector<Local> &regioes, vector<Local> &estados, ve
         estados.push_back(Local (est, id_UF));
     if(regioes.empty() || regioes.back().getNome() != reg)
         regioes.push_back(Local (reg, 0));
-    //Adiciona os dados, verificando se a data ja existe para as regioes, estados e pais.
+    //Adiciona os dados, verificando se a data ja existe para as regioes, estados e pais, se a data ja existe para aquele estado, regiao ou pais, soma os numeros de casos e obitos.
     cidades.back().inserirDado(Dado (novos_obitos, novos_casos, data));
     if(estados.back().getCalendarSize()>=cidades.back().getCalendarSize())
         estados.back().atualizar(novos_obitos, novos_casos, cidades.back().getCalendarSize()-1);
