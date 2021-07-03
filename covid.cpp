@@ -3,7 +3,7 @@ using namespace std;
 
 enum {obitos = 0, casos};
 
-void clean_stdin()
+void clean_stdin() // funcao para limpar o buffer
 {
     int c;
     do
@@ -43,7 +43,7 @@ public:
         return id;
     }
 
-    int getNumeros(int dia, int intervalo, int tipo) const
+    int getNumeros(int dia, int intervalo, int tipo) const // funcao que retorna o numero de casos novos ou de obitos novos
     {
         if(intervalo - 1 > dia || intervalo <= 0 || dia >= (int)calendar.size())
         {
@@ -63,7 +63,7 @@ public:
         return (double)getNumeros(dia, intervalo, tipo)/intervalo;
     }
 
-    double growth(int dia, int intervalo_media, int intervalo_crescimento, int tipo) const
+    double growth(int dia, int intervalo_media, int intervalo_crescimento, int tipo) const // tendência de crescimento 
     {
         if(intervalo_crescimento-1 >dia || intervalo_crescimento<=0)
         {
@@ -75,7 +75,7 @@ public:
         return 100*(num/den);
     }
 
-    double desvioPadrao(int dia, int intervalo, int tipo) const{
+    double desvioPadrao(int dia, int intervalo, int tipo) const{  //pergunta livre escolhida pelo grupo
         double resp = 0;
         double med = media(dia, intervalo, tipo);
         for(int i = dia-intervalo + 1; i <= dia; i++)
@@ -97,7 +97,7 @@ public:
     }
 };
 
-int queDiaFoiEsse(string data)
+int queDiaFoiEsse(string data) // funcao que retorna o dia em relação ao primeiro dia da planilha
 {
     //DD/MM para AAAA-MM-DD se nao for AAAA-MM-DD
     if((int)data.size() < 10){
@@ -207,7 +207,7 @@ void readFile(Local &pais, vector<Local> &regioes, vector<Local> &estados, vecto
     arq.close();
 }
 
-void informar(const Local &atual)
+void informar(const Local &atual) //funcao para montar o menu
 {
     int op = 1, intervalo = 0, intervalo_growth = 0, valor = 0;
     double media = 0, desvio = 0;
@@ -403,7 +403,7 @@ void informar(const Local &atual)
 
 }
 
-int enumerar(const vector<Local> &l_pesquisa)
+int enumerar(const vector<Local> &l_pesquisa) // funcao para buscar
 {
     string c = "1";
     int n = 1;
@@ -453,7 +453,7 @@ int enumerar(const vector<Local> &l_pesquisa)
     return 0;
 }
 
-void menu(Local &pais, vector<Local> &regioes, vector<Local> &estados, vector<Local> &cidades)
+void menu(Local &pais, vector<Local> &regioes, vector<Local> &estados, vector<Local> &cidades) //funcao menu principal
 {
     cout << "As estatisticas foram carregadas." << endl;
     int op = 1;
@@ -501,6 +501,6 @@ int main()
 {
     Local pais("Brasil", 1);
     vector<Local> regioes, estados, cidades;
-    readFile(pais, regioes, estados, cidades);
+    readFile(pais, regioes, estados, cidades); //armazena os dados
     menu(pais, regioes, estados, cidades);
 }
